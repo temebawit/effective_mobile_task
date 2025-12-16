@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: effective_mobile_backend
+    expose:
+      - "8080"
+    networks:
+      - effective_net
+
+  nginx:
+
+    image: nginx:stable-alpine
+    container_name: effective_mobile_nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - effective_net
+
+networks:
+  effective_net:
+    driver: bridge
